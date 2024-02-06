@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% if title %} <!-- If title is passed in render_template use title -->
+    <title>YORK L-IONS - {{ title }}</title>
+    {% else %}
+    <title>Admin Dashboard</title>
+    {% endif %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+</head>
+
+<body>
+    <div id="wrapper">
+        <header>
+            {% if header %}
+            {% block header %}{% endblock header %}
+            {% else %}
+            <h1>Admin Dashboard</h1>
+            {% endif %}
+        </header>
+
+        <div>
+            {% block content %}
+            {% if sidebar %}
+            <!-- Sidebar HTML logic here once they clicked on catalog, etc -->
+            {% else %}
+            {% endif %}
+            {% endblock content %}
+        </div>
+
+        <footer>{% block footer %}{% endblock footer%}</footer>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,82 @@
+{% extends "layout.html" %}
+
+{% block stylesheet  %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/trade-in.css') }}">
+{% endblock stylesheet %}
+
+{% block content %}
+<!-- TODO: Make this look nice, add some text above explaining the process. -->
+
+<div class="centred_content_wrapper">
+    <div id="title">
+        <h1>Turn Your Wheels into Deals</h1>
+        <h1>Sell Your Car to Us!</h1>
+    </div>
+
+    <p>Ready to part ways with your trusty vehicle? We're here to turn that process into a seamless and rewarding experience. At YORK L-IONS, we specialize in buying used cars, and we're eager to add your vehicle to our inventory of quality pre-owned automobiles.</p>
+    
+    <h2>Why Sell to Us?</h2>
+    <ol>
+        <li><strong>Fair and Transparent Valuation:</strong> Wondering what your car is worth? Our team utilizes cutting-edge valuation tools to ensure you receive a fair and competitive offer. We're committed to transparency throughout the process, explaining each step so you can sell with confidence.</li>
+        <li><strong>Effortless Selling Process:</strong> Selling your car shouldn't be a hassle. With YORK L-IONS, it's a breeze. Our user-friendly online platform allows you to submit details about your vehicle effortlessly. No need for lengthy negotiations – we aim to make the process swift and straightforward.</li>
+        <li><strong>Get Paid Quickly:</strong> Time is money, and we value both. Once we've agreed on a price, expect prompt payment. No delays, no excuses – just quick and hassle-free transactions.</li>
+    </ol>
+    
+    <h2>How It Works:</h2>
+    <ol>
+        <li><strong>Submit Your Vehicle Details:</strong> Start by filling out our simple online form. Provide us with the essential details about your car, including make, model, year, and current condition. Don't forget to add any special features or noteworthy upgrades!</li>
+        <li><strong>Receive Your Offer:</strong> Our team will swiftly evaluate your information and provide you with a competitive offer. Expect a fair assessment that reflects the true value of your vehicle.</li>
+        <li><strong>Accept the Offer:</strong> Happy with our offer? Great! Accept it, and we'll move forward with the process. Prepare your vehicle for inspection – we'll take care of the rest.</li>
+        <li><strong>Vehicle Inspection:</strong> Our experts will conduct a thorough but efficient inspection of your car. As long as the details match your submission, consider the hard part done.</li>
+        <li><strong>Get Paid and Hand Over the Keys:</strong> Once the inspection is complete, and everything checks out, you'll receive your payment promptly. Hand over the keys, and you're free to move on with the satisfaction of a successful sale!</li>
+    </ol>
+    
+    <h2>Why Wait? Sell Your Car Today!</h2>
+    
+    <p>Don't let your car gather dust when it could be turning into cash. Experience a hassle-free and rewarding selling process with YORK L-IONS. Submit your vehicle details now, and let's get the wheels turning on your next adventure!</p>
+    
+    {% if current_user.is_authenticated %} <!-- Flask session management is just :chefs_kiss: -->
+
+        <form action="" method="POST" enctype="multipart/form-data" class="floating_box">
+            {{ form.hidden_tag() }}
+            <h2 id="form_title">Vehicle Details</h2>
+            <div id="form_grid">
+                {{ form.year.label() }}
+                {{ form.year() }}
+                {{ form.make.label() }}
+                {{ form.make() }}
+                {{ form.model.label() }}
+                {{ form.model() }}
+                {{ form.trim.label() }}
+                {{ form.trim() }}
+                {{ form.colour.label() }}
+                {{ form.colour() }}
+                {{ form.type.label() }}
+                {{ form.type() }}
+                {{ form.kilometres.label() }}
+                {{ form.kilometres() }}
+                {{ form.max_range.label() }}
+                {{ form.max_range() }}
+                {{ form.picture.label() }}
+                {{ form.picture(class=image_upload) }}
+            </div>
+            {% if form.picture.errors %}
+            {% for error in form.picture.errors %}
+            <p style="color: red;">{{ error }}</p>
+            {% endfor %}
+            {% endif %}
+            <div id="text_areas">
+                {{ form.accidents.label() }}
+                {{ form.accidents(rows="4", cols="50") }}
+                {{ form.details.label() }}
+                {{ form.details(rows="4", cols="50") }}
+            </div>
+            {{ form.submit(class="button submit") }}
+        </form>
+    {% else %}
+        <h2 id="sign_in_message"><a href="{{ url_for('auth.login') }}">Sign In</a> or <a href="{{ url_for('auth.register') }}">Register</a> to sell your car today!</h2>
+    {% endif %}
+</div>
+
+
+{% endblock %}

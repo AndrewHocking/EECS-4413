@@ -1,0 +1,38 @@
+{% extends "admin_layout.html" %}
+{% block content %}
+<form action="" method="POST" enctype="multipart/form-data" class="floating_box">
+    {{ form.hidden_tag() }}
+    {{ form.price.label() }}<br/>
+    {{ form.price() }}<br/>
+    {{ form.discount.label() }}<br/>
+    {{ form.discount() }}<br/>
+    {{ form.year.label() }}<br/>
+    {{ form.year() }}<br/>
+    {{ form.make.label() }}<br/>
+    {{ form.make() }}<br/>
+    {{ form.model.label() }}<br/>
+    {{ form.model() }}<br/>
+    {{ form.trim.label() }}<br/>
+    {{ form.trim() }}<br/>
+    {{ form.colour.label() }}<br/>
+    {{ form.colour() }}<br/>
+    {{ form.type.label() }}<br/>
+    {{ form.type() }}<br/>
+    {{ form.kilometres.label() }}<br/>
+    {{ form.kilometres() }}<br/>
+    {{ form.max_range.label() }}<br/>
+    {{ form.max_range() }}<br/>
+    {{ form.picture.label() }}<br/>
+    {{ form.picture(class=image_upload) }}<br/>
+    {{ form.description.label() }}<br/>
+    {{ form.description(rows="4", cols="50") }}<br/>
+    {{ form.submit(class="button submit") }}<br/>
+    {% for error in form.errors.items() %}
+    <p style="color: red;">{{ error }}<br/></p>
+    {% endfor %}
+</form>
+
+<form action="{{ url_for('vehicle.create_dummy_data') }}" method="post">
+    <button>Create dummy data</button>
+</form>
+{% endblock content %}

@@ -1,0 +1,175 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<br />
+<div id="listing_container">
+    <div class="sidebar">
+        <h2>Search Filters</h2>
+        <form id="filters" onsubmit="applyFilters()" method="POST">
+            <label for="sort"><h4>Sort by:</h4></label>
+            <select id="sort" name="sort" onchange="applyFilters()">
+                <option id="hot_deals_desc" value="hot_deals" data-descending="true">🔥 Hot Deals</option>
+                <option id="date_added_desc" value="date_added" data-descending="true">↘️ Date Added</option>
+                <option id="date_added" value="date_added" data-descending="false">↗️ Date Added</option>
+                <option id="price_desc" value="price" data-descending="true">↘️ Price</option>
+                <option id="price" value="price" data-descending="false">↗️ Price</option>
+                <option id="km_desc" value="km" data-descending="true">↘️  Kilometres</option>
+                <option id="km" value="km" data-descending="false">↗️ Kilometres</option>
+                <option id="range_desc" value="range" data-descending="true">↘️  Max Driving Range</option>
+                <option id="range" value="range" data-descending="false">↗️ Max Driving Range</option>
+                <option id="year_desc" value="year" data-descending="true">↘️ Year</option>
+                <option id="year" value="year" data-descending="false">↗️ Year</option>
+            </select>
+            <label for="price"><h4>Price:</h4></label>
+            <div id="price">
+                <label for="min_price">Min:</label>
+                <input type="number" id="min_price" name="min_price" onfocusout="applyFilters()"/>
+                <label for="max_price">Max:</label>
+                <input type="number" id="max_price" name="max_price" onfocusout="applyFilters()"/>
+            </div>
+            <label for="kilometres"><h4>Kilometres:</h4></label>
+            <div id="kilometres">
+                <label for="min_kilometres">Min:</label>
+                <input type="number" id="min_kilometres" name="min_kilometres" onfocusout="applyFilters()"/>
+                <label for="max_kilometres">Max:</label>
+                <input type="number" id="max_kilometres" name="max_kilometres" onfocusout="applyFilters()"/>
+            </div>
+            <label for="range"><h4>Max Driving Range:</h4></label>
+            <div id="range">
+                <label for="min_range">Min:</label>
+                <input type="number" id="min_range" name="min_range" onfocusout="applyFilters()"/>
+                <label for="max_range">Max:</label>
+                <input type="number" id="max_range" name="max_range" onfocusout="applyFilters()"/>
+            </div>
+            <label for="year"><h4>Year:</h4></label>
+            <div id="year">
+                <label for="min_year">Min:</label>
+                <input type="number" id="min_year" name="min_year" onfocusout="applyFilters()"/>
+                <label for="max_year">Max:</label>
+                <input type="number" id="max_year" name="max_year" onfocusout="applyFilters()"/>
+            </div>
+            <label for="condition"><h4>Condition:</h4></label>
+            <select id="condition" name="condition" onchange="applyFilters()">
+                <option id="condition_all" value="all">All</option>
+                <option id="condition_new" value="new">New</option>
+                <option id="condition_used" value="used">Used</option>
+            </select>
+            <label for="type"><h4>Type:</h4></label>
+            <select id="type" name="type" onchange="applyFilters()">
+                <option id="type_all" value="all">All</option>
+                {% for type in vehicle_data.types %}
+                <option id="type_{{ type[0] }}" value="{{ type[0] }}">{{ type[0] }}</option>
+                {% endfor %}
+            </select>
+            <label for="make"><h4>Make:</h4></label>
+            <select id="make" name="make" onchange="didChangeMake()">
+                <option id="make_all" value="all">All</option>
+                {% for make in vehicle_data.makes %}
+                <option id="make_{{ make[0] }}" value="{{ make[0] }}">{{ make[0] }}</option>
+                {% endfor %}
+            </select>
+            <label for="model"><h4>Model:</h4></label>
+            <select id="model" name="model" onchange="didChangeModel()">
+                <option id="model_all" value="all">All</option>
+                {% for model in vehicle_data.models %}
+                <option id="model_{{ model[0] }}" value="{{ model[0] }}">{{ model[0] }}</option>
+                {% endfor %}
+            </select>
+            <label for="trim"><h4>Trim:</h4></label>
+            <select id="trim" name="trim" onchange="applyFilters()">
+                <option id="trim_all" value="all">All</option>
+                {% for trim in vehicle_data.trims %}
+                <option id="trim_{{ trim[0] }}" value="{{ trim[0] }}">{{ trim[0] }}</option>
+                {% endfor %}
+            </select>
+            <label for="colour"><h4>Colour:</h4></label>
+            <select id="colour" name="colour">
+                <option id="colour_all" value="all">All</option>
+                {% for colour in vehicle_data.colours %}
+                <option id="colour_{{ colour[0] }}" value="{{ colour[0] }}">{{ colour[0] }}</option>
+                {% endfor %}
+            </select>
+            <input type="submit" class="button" id="apply_button" value="Apply Filters"/>
+            <div id="hidden_filters" hidden="true">
+                <input type="checkbox" id="descending" name="descending" value="true">
+            </div>
+        </form>
+    </div>
+
+    {% if not vehicle_data.vehicles %}
+        <div class="error_message">
+            <h1>No vehicles found</h1>
+            <h3>Try adjusting your search criteria</h3>
+        </div>
+    {% else %}
+        <div class="grid">
+            {% for vehicle in vehicle_data.vehicles %}
+                {% include "catalogue/grid_item.html" %}
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+
+<script>
+    function didChangeMake() {
+        document.getElementById("model").value = "all";
+        document.getElementById("trim").value = "all";
+        applyFilters();
+    }
+    function didChangeModel() {
+        document.getElementById("type").value = "all";
+        document.getElementById("trim").value = "all";
+        applyFilters();
+    }
+
+    function applyFilters() {
+        var sort = document.getElementById("sort");
+        var descending = sort.options[sort.selectedIndex].dataset.descending;
+        document.getElementById('descending').checked = descending == "true";
+        document.getElementById('filters').submit();
+    }
+
+    function setFilters() {
+        var sort = "{{ search_criteria.get('sort') or 'date_added' }}";
+        var descending = "{{ search_criteria.get('descending')}}";
+        if (descending == "true") {
+            sort = sort + "_desc"
+        }
+        document.getElementById(sort).selected = true;
+
+        document.getElementById("min_price").value = "{{ search_criteria.get('min_price') or '' }}";
+        document.getElementById("max_price").value = "{{ search_criteria.get('max_price') or '' }}";
+
+        var condition = "condition_" + "{{ search_criteria.get('condition') or 'all' }}";
+        document.getElementById(condition).selected = true;
+
+        document.getElementById("min_year").value = "{{ search_criteria.get('min_year') or '' }}";
+        document.getElementById("max_year").value = "{{ search_criteria.get('max_year') or '' }}";
+
+        document.getElementById("min_range").value = "{{ search_criteria.get('min_range') or '' }}";
+        document.getElementById("max_range").value = "{{ search_criteria.get('max_range') or '' }}";
+
+        document.getElementById("min_kilometres").value = "{{ search_criteria.get('min_kilometres') or '' }}";
+        document.getElementById("max_kilometres").value = "{{ search_criteria.get('max_kilometres') or '' }}";
+        
+        document.getElementById("type").value = "{{ search_criteria.get('type') or 'all' }}";
+        document.getElementById("make").value = "{{ search_criteria.get('make') or 'all' }}";
+        document.getElementById("model").value = "{{ search_criteria.get('model') or 'all' }}";
+        document.getElementById("trim").value = "{{ search_criteria.get('trim') or 'all' }}";
+        document.getElementById("colour").value = "{{ search_criteria.get('colour') or 'all' }}";
+
+        var selects = document.getElementsByTagName("select");
+        for (select in selects) {
+            select.addEventListener("change", applyFilters);
+        }
+
+        var inputs = document.getElementsByTagName("input");
+        for (input in inputs) {
+            input.addEventListener("submit", applyFilters);
+            input.addEventListener("focusout", applyFilters);
+        }
+    }
+
+    window.onload = setFilters;
+</script>
+{% endblock %}

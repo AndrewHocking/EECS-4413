@@ -1,0 +1,15 @@
+{% extends "admin_layout.html" %}
+
+{% block content %}
+<form action="{{ url_for('user.update') }}" method="post">
+    <label for="id">ID:</label>
+    <input type="number" id="id" name="id">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username">
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email">
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password">
+    <input type="submit" value="Update User">
+</form>
+{% endblock %}

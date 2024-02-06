@@ -1,0 +1,97 @@
+.image_container {
+    width: 540px;
+    height: 360px;
+    margin-bottom: 10px;
+    border-radius: 25px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.vehicle_details {
+    margin-left: 20px;
+}
+
+.description, .price_box, .image_container, .vehicle_details {
+    margin-bottom: 30px;
+}
+
+.description {
+    width: 100%;
+    margin-left: 20px;
+    text-align: justify;
+    hyphens: manual;
+}
+
+.price_box {
+    margin-left: 0px;
+    height: fit-content;
+}
+
+.rating_box {
+    width: 100%;
+}
+
+.button {
+    margin-top: 5px;
+}
+
+.button.add_to_cart {
+    width: 100%;
+}
+
+.compare_vehicle_form {
+    width: 100%;
+    position: relative;
+    height: 50px;
+}
+
+.button.compare_vehicle {
+    position: absolute;
+    left: 50%;
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+
+.average_rating {
+    font-size: larger;
+    font-weight: bold;
+}
+
+.rating_box {
+    margin-bottom: 30px;
+}
+
+.star_container {
+    display: inline-block;
+    width: 80pt;
+    height: 36px;
+    margin-bottom: -100px;
+}
+
+.empty_star_container {
+    width: 80pt;
+    display: inline-block;
+    z-index: -1;
+    position: relative;
+    top: -106%;
+    margin-bottom: -100px;
+}
+
+.despacer {
+    color: transparent;
+    margin-top: -50pt;
+}
+
+.stars {
+    display: inline-block;
+    overflow: hidden;
+    margin-right: -5px;
+    font-size: 16pt;
+}
+
+.stars.orange {
+    color: orange;
+}
+
+.stars.grey {
+    color: lightgray;
+}
